@@ -1,0 +1,30 @@
+.container{
+  border: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.footer{
+  position: fixed;
+  color: white;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  background-color: #0033A0;
+  border-top: 1px solid #ddd;  /* Optional: adds a subtle top border */
+}
+
+.btn-primary {
+  background-color: #0033A0;
+  border-color: #0033A0;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #00257d;  /* This is a slightly darker shade for interaction */
+  border-color: #00257d;
+}
