@@ -36,9 +36,8 @@ A simple web application that changes the background color of the page when a bu
 - JavaScript
 - Bootstrap 5
 
-## Contributions
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+## Inpiration:
+https://www.youtube.com/playlist?list=PLtMugc7g4GaqAVDZwQ_t1H6500ZGJzOgW
 
 ## License
 
