@@ -9,8 +9,6 @@ https://otomisin.github.io/OPPWeek/
 # Color Changer Web App
 
 A simple web application that changes the background color of the page when a button is clicked. Users can also see the name of the current color displayed in a footer.
-
-![Screenshot](path-to-your-screenshot.png) 
 ![Alt text](image.png)
 
 ## Features
