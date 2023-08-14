@@ -45,5 +45,3 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 MIT
 
 ---
-
-You can further enhance the README by adding more detailed descriptions, screenshots, or even GIFs showcasing the functionality, if desired. Make sure to replace placeholder links and usernames with your actual information.
