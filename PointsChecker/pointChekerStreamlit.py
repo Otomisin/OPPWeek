@@ -6,6 +6,7 @@ import json
 from streamlit_folium import st_folium
 from datetime import datetime
 from io import StringIO
+import time
 
 @st.cache_data
 def today():
@@ -29,7 +30,7 @@ def main():
     st.sidebar.markdown('*GeoPoint Checker is a Streamlit-based web application designed for efficient geographic data assessment. It focuses on verifying the accuracy of geographical data points against designated areas, using spatial analysis. This tool is particularly useful for field data verification, offering valuable insights to researchers, GIS professionals, and data analysts. Upload the csv and geojson files used in the distributing enumerators.*')
     st.sidebar.divider()
     
-    # Remove the St Style
+    #Remove the St Style
     hideStStyle = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -38,7 +39,10 @@ def main():
             </style>
             """
     st.markdown(hideStStyle, unsafe_allow_html=True)
-
+    
+    with st.spinner('Wait for it...'):
+        time.sleep(5)
+    # st.success('Done!')
 
     # File upload for the CSV and GeoJSON files
     st.sidebar.markdown("<h1 style='text-align: left;'>DATA UPLOAD</h1>", unsafe_allow_html=True)
