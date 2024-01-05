@@ -1,0 +1,122 @@
+---
+title: "Geofencing with R"
+author: "Oluwatosin Orenaike"
+format: html
+editor: visual
+---
+
+## Introduction
+
+```{r}
+library(sf)
+library(tidyverse)
+```
+
+```{r}
+wau_Naviasha <- st_read("C:/Users/orena/OneDrive/02_JOBS/IOM/4_OTHERS/SSD/WAU_Camp/Wau PoC AA/Wau_Naviasha_Blocks.shp")
+wau_test <- st_read("C:/Users/orena/OneDrive/02_JOBS/IOM/4_OTHERS/SSD/WAU_Camp/Wau PoC AA/Vert_Test/vert_test.shp")
+```
+
+# Loading the needed data
+- Let's load the sample shp data and preview. As you can see in this case we have
+
+```{r}
+#| echo: false
+
+Sample_locations = st_read("./shp_file/Sample_locations.shp")
+
+
+# Check the table
+print(st_drop_geometry(Sample_locations))
+
+# Plot the check
+Sample_locations |> 
+  ggplot() +
+  geom_sf() +
+  geom_label(aes(x = st_coordinates(st_centroid(geometry))[, 1],
+                 y = st_coordinates(st_centroid(geometry))[, 2],
+                 label = paste(House)),
+             size = 3, fill = "lightblue", color = "black", size = 1) +
+  theme_void()
+
+```
+
+```{r}
+# Extract coordinates using the same CRS as the original data
+polygon_vertices <- lapply(st_geometry(Sample_locations), st_coordinates)
+
+# Map each polygon_vertices list to its OBJECTID row
+mapped_data <- Map(function(vertices, objectid) {
+  data.frame(OBJECTID = objectid, 
+             p_longitude = vertices[, "X"],  
+             p_latitude = vertices[, "Y"])
+}, polygon_vertices, Sample_locations$OBJECTID)
+
+# Combine the mapped data frames into a single data frame
+mapped_data_v1 <- do.call(rbind, mapped_data)
+
+# Use the same CRS as the original data when creating sample_locations
+Sample_locations_points <- Sample_locations |> 
+  as.data.frame() |>
+  left_join(mapped_data_v1, by = c("OBJECTID" = "OBJECTID")) |>
+  st_as_sf(coords = c("p_longitude", "p_latitude"), crs = st_crs(Sample_locations))
+
+# Generate the id_node
+wau_test_df_v1 <- Sample_locations_points %>%
+  group_by(Block) %>%
+  mutate(id_node = paste0(Block, "_",row_number() )) %>%
+  ungroup()
+
+# View the points and polygons
+ggplot() +
+  geom_sf(data = Sample_locations) +
+  geom_label(data = Sample_locations,
+             aes(x = st_coordinates(st_centroid(geometry))[, 1],
+                 y = st_coordinates(st_centroid(geometry))[, 2],
+                 label = House),
+             size = 3, fill = "lightblue", color = "black") +
+  geom_sf(data = Sample_locations_points) +
+  theme_void()
+
+```
+
+
+
+
+```{r}
+wau_test_df |> 
+  ggplot() +
+  geom_sf()
+
+```
+```{r}
+# Assuming you have a data frame named wau_test_df
+
+library(dplyr)
+
+wau_test_df <- wau_test_df %>%
+  group_by(Block) %>%
+  mutate(id_node = paste0(row_number(), "_", Block)) %>%
+  ungroup()
+
+# Print the updated data frame
+print(wau_test_df)
+
+```
+
+```{r}
+# Plot individual zones or blocks
+wau_test_df |> 
+  ggplot() +
+  geom_sf() +
+  facet_wrap(~Zone_)
+
+# Plot individual blocks
+wau_test_df |> 
+  ggplot() +
+  geom_sf() +
+  facet_wrap(~Block) +
+  theme_minimal()
+
+```
+
